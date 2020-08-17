@@ -18,7 +18,8 @@ type Repository interface {
 
 type Service interface {
 	GetById(string) (*access_token.AccessToken, *errors.RestError)
-	Create(*access_token.AccessTokenRequest) (*access_token.AccessToken, *errors.RestError)
+	Create(*access_token.AccessTokenRequest) (*access_token.AccessToken,
+		*errors.RestError)
 	UpdateExpirationTime(*access_token.AccessToken) *errors.RestError
 }
 
@@ -37,7 +38,8 @@ func NewService(restRepo rest.RestUsersRepository, repo Repository) Service {
 //
 // GetById - Get access token by id
 //
-func (s *service) GetById(accessTokenId string) (*access_token.AccessToken, *errors.RestError) {
+func (s *service) GetById(accessTokenId string) (*access_token.AccessToken,
+	*errors.RestError) {
 
 	accessTokenId = strings.TrimSpace(accessTokenId)
 	if len(accessTokenId) == 0 {
