@@ -7,7 +7,7 @@ import (
 
 	"github.com/judesantos/go-bookstore_oauth_api/src/client/cassandra"
 	"github.com/judesantos/go-bookstore_oauth_api/src/domain/access_token"
-	"github.com/judesantos/go-bookstore_oauth_api/src/utils/errors"
+	"github.com/judesantos/go-bookstore_utils/rest_errors"
 )
 
 var (
@@ -23,9 +23,9 @@ func New() DbRepository {
 }
 
 type DbRepository interface {
-	GetById(string) (*access_token.AccessToken, *errors.RestError)
-	Create(*access_token.AccessToken) *errors.RestError
-	UpdateExpirationTime(*access_token.AccessToken) *errors.RestError
+	GetById(string) (*access_token.AccessToken, *rest_errors.RestError)
+	Create(*access_token.AccessToken) *rest_errors.RestError
+	UpdateExpirationTime(*access_token.AccessToken) *rest_errors.RestError
 }
 
 type dbRepository struct{}
@@ -33,7 +33,7 @@ type dbRepository struct{}
 //
 // GetByID - Get access token by id
 //
-func (r *dbRepository) GetById(id string) (*access_token.AccessToken, *errors.RestError) {
+func (r *dbRepository) GetById(id string) (*access_token.AccessToken, *rest_errors.RestError) {
 
 	session := cassandra.GetSession()
 
@@ -46,9 +46,9 @@ func (r *dbRepository) GetById(id string) (*access_token.AccessToken, *errors.Re
 		&result.Expires,
 	); err != nil {
 		if err.Error() == "not found" {
-			return nil, errors.NotFoundError("access token not found")
+			return nil, rest_errors.NotFoundError("access token not found")
 		}
-		return nil, errors.BadRequestError("Get by id search failed")
+		return nil, rest_errors.BadRequestError("Get by id search failed")
 	}
 
 	return &result, nil
@@ -57,7 +57,7 @@ func (r *dbRepository) GetById(id string) (*access_token.AccessToken, *errors.Re
 //
 // Create - Create access token
 //
-func (r *dbRepository) Create(at *access_token.AccessToken) *errors.RestError {
+func (r *dbRepository) Create(at *access_token.AccessToken) *rest_errors.RestError {
 
 	session := cassandra.GetSession()
 
@@ -68,7 +68,7 @@ func (r *dbRepository) Create(at *access_token.AccessToken) *errors.RestError {
 		at.Expires,
 	).Exec(); err != nil {
 		fmt.Println(err)
-		return errors.BadRequestError("Create token failed")
+		return rest_errors.BadRequestError("Create token failed")
 	}
 
 	return nil
@@ -77,7 +77,7 @@ func (r *dbRepository) Create(at *access_token.AccessToken) *errors.RestError {
 //
 // UpdateExpirationTime - Updates access_token expiration time
 //
-func (r *dbRepository) UpdateExpirationTime(at *access_token.AccessToken) *errors.RestError {
+func (r *dbRepository) UpdateExpirationTime(at *access_token.AccessToken) *rest_errors.RestError {
 
 	session := cassandra.GetSession()
 
@@ -85,7 +85,7 @@ func (r *dbRepository) UpdateExpirationTime(at *access_token.AccessToken) *error
 		at.Expires,
 		at.AccessToken,
 	).Exec(); err != nil {
-		return errors.BadRequestError("Create token failed")
+		return rest_errors.BadRequestError("Create token failed")
 	}
 
 	return nil
