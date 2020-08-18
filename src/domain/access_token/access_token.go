@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/judesantos/go-bookstore_oauth_api/src/utils/errors"
 	crypto_utils "github.com/judesantos/go-bookstore_users_api/utils/crypto"
+	"github.com/judesantos/go-bookstore_utils/rest_errors"
 )
 
 const (
@@ -31,7 +31,7 @@ type AccessTokenRequest struct {
 //
 // Validate - Validates access token request
 //
-func (at *AccessTokenRequest) Validate() *errors.RestError {
+func (at *AccessTokenRequest) Validate() *rest_errors.RestError {
 
 	switch at.GrantType {
 	case grantTypePassword:
@@ -39,7 +39,7 @@ func (at *AccessTokenRequest) Validate() *errors.RestError {
 	case grantTypeClientCredentials:
 		break
 	default:
-		return errors.BadRequestError("invalid grant type")
+		return rest_errors.BadRequestError("invalid grant type")
 	}
 
 	return nil
@@ -56,20 +56,20 @@ type AccessToken struct {
 //
 // Validate - Validates access token
 //
-func (at *AccessToken) Validate() *errors.RestError {
+func (at *AccessToken) Validate() *rest_errors.RestError {
 
 	at.AccessToken = strings.TrimSpace(at.AccessToken)
 	if at.AccessToken == "" {
-		return errors.InvalidParameterError("Invalid access token id")
+		return rest_errors.InvalidParameterError("Invalid access token id")
 	}
 	if at.UserId <= 0 {
-		return errors.InvalidParameterError("Invalid access token user id")
+		return rest_errors.InvalidParameterError("Invalid access token user id")
 	}
 	if at.ClientId <= 0 {
-		return errors.InvalidParameterError("Invalid access token client id")
+		return rest_errors.InvalidParameterError("Invalid access token client id")
 	}
 	if at.Expires <= 0 {
-		return errors.InvalidParameterError("Invalid access token expiration")
+		return rest_errors.InvalidParameterError("Invalid access token expiration")
 	}
 
 	return nil

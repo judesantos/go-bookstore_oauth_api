@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/judesantos/go-bookstore_oauth_api/src/domain/users"
-	"github.com/judesantos/go-bookstore_oauth_api/src/utils/errors"
+	"github.com/judesantos/go-bookstore_users_api/utils/errors"
 	"github.com/mercadolibre/golang-restclient/rest"
 )
 
