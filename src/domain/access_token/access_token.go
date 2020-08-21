@@ -31,7 +31,7 @@ type AccessTokenRequest struct {
 //
 // Validate - Validates access token request
 //
-func (at *AccessTokenRequest) Validate() *rest_errors.RestError {
+func (at *AccessTokenRequest) Validate() rest_errors.IRestError {
 
 	switch at.GrantType {
 	case grantTypePassword:
@@ -56,7 +56,7 @@ type AccessToken struct {
 //
 // Validate - Validates access token
 //
-func (at *AccessToken) Validate() *rest_errors.RestError {
+func (at *AccessToken) Validate() rest_errors.IRestError {
 
 	at.AccessToken = strings.TrimSpace(at.AccessToken)
 	if at.AccessToken == "" {

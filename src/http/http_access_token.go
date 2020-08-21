@@ -35,7 +35,7 @@ func (h *accessTokenHandler) GetById(c *gin.Context) {
 	accessTokenId := c.Query("access_token_id")
 	accessToken, err := h.service.GetById(accessTokenId)
 	if err != nil {
-		c.JSON(err.Status, err)
+		c.JSON(err.Status(), err)
 		return
 	}
 
@@ -51,15 +51,15 @@ func (h *accessTokenHandler) Create(c *gin.Context) {
 
 	if err := c.ShouldBindJSON(&at); err != nil {
 		restErr := rest_errors.BadRequestError("invalid json request")
-		c.JSON(restErr.Status, restErr)
+		c.JSON(restErr.Status(), restErr)
 		return
 	}
 
 	var result *atDomain.AccessToken
-	var err *rest_errors.RestError
+	var err rest_errors.IRestError
 
 	if result, err = h.service.Create(&at); err != nil {
-		c.JSON(err.Status, err)
+		c.JSON(err.Status(), err)
 		return
 	}
 
@@ -75,12 +75,12 @@ func (h *accessTokenHandler) UpdateExpirationTime(c *gin.Context) {
 	var at atDomain.AccessToken
 	if err := c.ShouldBindJSON(&at); err != nil {
 		restErr := rest_errors.BadRequestError("invalid json request")
-		c.JSON(restErr.Status, restErr)
+		c.JSON(restErr.Status(), restErr)
 		return
 	}
 
 	if err := h.service.UpdateExpirationTime(&at); err != nil {
-		c.JSON(err.Status, err)
+		c.JSON(err.Status(), err)
 		return
 	}
 
