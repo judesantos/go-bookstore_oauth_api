@@ -3,9 +3,10 @@ package access_token
 // access_token_get.go
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGetNewAccessTokenConstants(t *testing.T) {
@@ -13,7 +14,8 @@ func TestGetNewAccessTokenConstants(t *testing.T) {
 }
 
 func TestGetNewAccessToken(t *testing.T) {
-	at := GetNewAccessToken()
+	var userId int64 = 1
+	at := GetNewAccessToken(userId)
 
 	assert.False(t, at.isExpired(), "Access token is expired")
 	assert.EqualValues(t, "", at.AccessToken, "invalid access token")

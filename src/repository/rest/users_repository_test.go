@@ -6,7 +6,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/mercadolibre/golang-restclient/rest"
+	"github.com/federicoleon/golang-restclient/rest"
 	"github.com/stretchr/testify/assert"
 )
 
